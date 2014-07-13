@@ -671,13 +671,35 @@ vp.items_binding_action =	function(ids, field, func, thecase) {
 	var $loader = $source_tr.find('.vp-js-bind-loader'),
 	    $input  = $source_tr.find('.input');
 
+	// Deferred Object
+	var deferred = jQuery.Deferred();
+
+	// Fade binded field out
+	$input.vp_fadeOut(function(){
+		deferred.resolve();
+	});
+
+	// When field has faded out, 
+	// Fade in loader. 
+	var deferred2 = jQuery.Deferred();
+	deferred.done(function(value) {
+		$loader.vp_fadeIn(function() {
+			deferred2.resolve();
+		});
+	})
+
 	$input.vp_fadeOut(function(){
 		$loader.vp_fadeIn();
 	});
 
 	jQuery.post(ajaxurl, data, function(response) {
-		$loader.vp_fadeOut(function(){
-			$input.vp_fadeIn();
+
+		// When loader has finished fadeing in
+		// fade it out and fade in input
+		deferred2.done(function(value) {
+			$loader.vp_fadeOut(function(){
+				$input.vp_fadeIn();
+			});
 		});
 		if (response.status)
 		{
