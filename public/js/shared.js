@@ -3,77 +3,77 @@
  * =============================================================
  */
 
-"use strict";
+ "use strict";
 
-jQuery.fn.getAttributes = function() {
-	var attributes = {};
-	if (!this.length)
-		return this;
-	jQuery.each(this[0].attributes, function(index, attr) {
-		attributes[attr.name] = attr.value;
-	});
-	return attributes;
-};
-jQuery.fn.getDatas = function() {
-	var attributes = {},
-	    prefix = "data-vp-";
-	if (!this.length)
-		return this;
-	jQuery.each(this[0].attributes, function(index, attr) {
-		if (attr.name.substring(0, prefix.length) == prefix)
-		{
-			attributes[attr.name.substring(prefix.length)] = attr.value;
-		}
-	});
-	return attributes;
-};
-jQuery.fn.exists = function () {
-	return this.length !== 0;
-};
-if (!String.prototype.trimChar) {
-	String.prototype.trimChar =  function(string) { return this.replace(new RegExp('^' + string + '+|' + string + '+$', 'g'), ''); };
-}
-if (!String.prototype.format) {
-	String.prototype.format = function() {
-		var args = arguments;
-		return this.replace(/{(\d+)}/g, function(match, number) {
-			return typeof args[number] != 'undefined' ? args[number] : match;
-		});
-	};
-}
-if (!String.prototype.replaceAll){
+ jQuery.fn.getAttributes = function() {
+ 	var attributes = {};
+ 	if (!this.length)
+ 		return this;
+ 	jQuery.each(this[0].attributes, function(index, attr) {
+ 		attributes[attr.name] = attr.value;
+ 	});
+ 	return attributes;
+ };
+ jQuery.fn.getDatas = function() {
+ 	var attributes = {},
+ 	prefix = "data-vp-";
+ 	if (!this.length)
+ 		return this;
+ 	jQuery.each(this[0].attributes, function(index, attr) {
+ 		if (attr.name.substring(0, prefix.length) == prefix)
+ 		{
+ 			attributes[attr.name.substring(prefix.length)] = attr.value;
+ 		}
+ 	});
+ 	return attributes;
+ };
+ jQuery.fn.exists = function () {
+ 	return this.length !== 0;
+ };
+ if (!String.prototype.trimChar) {
+ 	String.prototype.trimChar =  function(string) { return this.replace(new RegExp('^' + string + '+|' + string + '+$', 'g'), ''); };
+ }
+ if (!String.prototype.format) {
+ 	String.prototype.format = function() {
+ 		var args = arguments;
+ 		return this.replace(/{(\d+)}/g, function(match, number) {
+ 			return typeof args[number] != 'undefined' ? args[number] : match;
+ 		});
+ 	};
+ }
+ if (!String.prototype.replaceAll){
 	/**
 	 * ReplaceAll by Fagner Brack (MIT Licensed)
 	 * Replaces all occurrences of a substring in a string
 	 */
-	String.prototype.replaceAll = function(token, newToken, ignoreCase) {
-		var str, i = -1, _token;
-		if((str = this.toString()) && typeof token === "string") {
-			_token = ignoreCase === true? token.toLowerCase() : undefined;
-			while((i = (
-				_token !== undefined?
-					str.toLowerCase().indexOf(
-								_token,
-								i >= 0? i + newToken.length : 0
-					) : str.indexOf(
-								token,
-								i >= 0? i + newToken.length : 0
-					)
-			)) !== -1 ) {
-				str = str.substring(0, i)
-						 .concat(newToken)
-						 .concat(str.substring(i + token.length));
-			}
-	    }
-	return str;
+	 String.prototype.replaceAll = function(token, newToken, ignoreCase) {
+	 	var str, i = -1, _token;
+	 	if((str = this.toString()) && typeof token === "string") {
+	 		_token = ignoreCase === true? token.toLowerCase() : undefined;
+	 		while((i = (
+	 			_token !== undefined?
+	 			str.toLowerCase().indexOf(
+	 				_token,
+	 				i >= 0? i + newToken.length : 0
+	 				) : str.indexOf(
+	 				token,
+	 				i >= 0? i + newToken.length : 0
+	 				)
+	 				)) !== -1 ) {
+	 			str = str.substring(0, i)
+	 		.concat(newToken)
+	 		.concat(str.substring(i + token.length));
+	 	}
+	 }
+	 return str;
 	};
 }
 // Validation Functions
 jQuery.fn.validationVal = function() {
 	var $this = this,
-	    val = '',
-	    tagName = $this.prop('tagName'),
-	    checked;
+	val = '',
+	tagName = $this.prop('tagName'),
+	checked;
 
 	if (($this.length > 1 && $this.attr('type') != 'radio') || $this.attr('multiple')) { val = []; }
 
@@ -85,30 +85,30 @@ jQuery.fn.validationVal = function() {
 		switch (tagName)
 		{
 			case 'SELECT':
-				if ($field.has('[multiple]'))
-				{
-					val = $field.val();
-				}
-				else
-				{
-					val = $field.val();
-				}
-				break;
+			if ($field.has('[multiple]'))
+			{
+				val = $field.val();
+			}
+			else
+			{
+				val = $field.val();
+			}
+			break;
 			case 'INPUT':
-				switch ($this.attr('type'))
+			switch ($this.attr('type'))
+			{
+				case 'text':
+				val = $field.val();
+				break;
+				case 'radio':
+				checked = $field.prop('checked');
+				if (typeof checked !== 'undefined' && checked !== false)
+					val = $field.val();
+				break;
+				case 'checkbox':
+				checked = $field.prop('checked');
+				if ($this.length > 1)
 				{
-					case 'text':
-						val = $field.val();
-						break;
-					case 'radio':
-						checked = $field.prop('checked');
-						if (typeof checked !== 'undefined' && checked !== false)
-							val = $field.val();
-						break;
-					case 'checkbox':
-						checked = $field.prop('checked');
-						if ($this.length > 1)
-						{
 							if (typeof checked !== 'undefined' && checked !== false) { val.push($field.val()); } // multiple
 						}
 						else
@@ -117,16 +117,16 @@ jQuery.fn.validationVal = function() {
 							if (typeof checked !== 'undefined' && checked !== false) { val = $field.val(); } // multiple
 						}
 						break;
+					}
+					break;
+					case 'TEXTAREA':
+					val = $field.val();
+					break;
+					default:
+					val = $field.val();
+					break;
 				}
-				break;
-			case 'TEXTAREA':
-				val = $field.val();
-				break;
-			default:
-				val = $field.val();
-				break;
-		}
-	});
+			});
 
 	// quick fix trial
 	if (val === null)
@@ -215,107 +215,107 @@ jQuery.fn.vp_toggle = function(callback){
 /**
  * vafpress global namespace
  */
-var vp = {};
+ var vp = {};
 
-vp.isNumber = function(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-};
-vp.parseOpt = function(optString) {
-	var openIdx, closeIdx, temp, tempArr, opt = {};
-	for (var i = 0; i < optString.length; i++)
-	{
-		if (optString[i] == '(')
-		{
-			openIdx = i;
-		}
-		if (optString[i] == ')')
-		{
-			closeIdx = i;
-			temp = optString.substring(openIdx + 1, closeIdx);
-			tempArr = temp.split(':');
-			opt[tempArr[0]] = vp.isNumber(tempArr[1]) ? parseFloat(tempArr[1]) : tempArr[1];
-		}
-	}
-	return opt;
-};
+ vp.isNumber = function(n) {
+ 	return !isNaN(parseFloat(n)) && isFinite(n);
+ };
+ vp.parseOpt = function(optString) {
+ 	var openIdx, closeIdx, temp, tempArr, opt = {};
+ 	for (var i = 0; i < optString.length; i++)
+ 	{
+ 		if (optString[i] == '(')
+ 		{
+ 			openIdx = i;
+ 		}
+ 		if (optString[i] == ')')
+ 		{
+ 			closeIdx = i;
+ 			temp = optString.substring(openIdx + 1, closeIdx);
+ 			tempArr = temp.split(':');
+ 			opt[tempArr[0]] = vp.isNumber(tempArr[1]) ? parseFloat(tempArr[1]) : tempArr[1];
+ 		}
+ 	}
+ 	return opt;
+ };
 
-vp.wp_ext2type = function ( ext ) {
-	var ext2type = {
-		image       : ['jpg', 'jpeg', 'bmp',  'gif',  'png'],
-		audio       : ['aac', 'ac3',  'aif',  'aiff', 'm3a',  'm4a',   'm4b',  'mka',  'mp1',  'mp2',  'mp3', 'ogg', 'oga', 'ram', 'wav', 'wma'],
-		video       : ['asf', 'avi',  'divx', 'dv',   'flv',  'm4v',   'mkv',  'mov',  'mp4',  'mpeg', 'mpg', 'mpv', 'ogm', 'ogv', 'qt',  'rm', 'vob', 'wmv'],
-		document    : ['doc', 'docx', 'docm', 'dotm', 'odt',  'pages', 'pdf',  'rtf',  'wp',   'wpd'],
-		spreadsheet : ['numbers',     'ods',  'xls',  'xlsx', 'xlsm',  'xlsb'],
-		interactive : ['swf', 'key',  'ppt',  'pptx', 'pptm', 'pps',   'ppsx', 'ppsm', 'sldx', 'sldm', 'odp'],
-		text        : ['asc', 'csv',  'tsv',  'txt'],
-		archive     : ['bz2', 'cab',  'dmg',  'gz',   'rar',  'sea',   'sit',  'sqx',  'tar',  'tgz',  'zip', '7z'],
-		code        : ['css', 'htm',  'html', 'php',  'js']
-	};
+ vp.wp_ext2type = function ( ext ) {
+ 	var ext2type = {
+ 		image       : ['jpg', 'jpeg', 'bmp',  'gif',  'png'],
+ 		audio       : ['aac', 'ac3',  'aif',  'aiff', 'm3a',  'm4a',   'm4b',  'mka',  'mp1',  'mp2',  'mp3', 'ogg', 'oga', 'ram', 'wav', 'wma'],
+ 		video       : ['asf', 'avi',  'divx', 'dv',   'flv',  'm4v',   'mkv',  'mov',  'mp4',  'mpeg', 'mpg', 'mpv', 'ogm', 'ogv', 'qt',  'rm', 'vob', 'wmv'],
+ 		document    : ['doc', 'docx', 'docm', 'dotm', 'odt',  'pages', 'pdf',  'rtf',  'wp',   'wpd'],
+ 		spreadsheet : ['numbers',     'ods',  'xls',  'xlsx', 'xlsm',  'xlsb'],
+ 		interactive : ['swf', 'key',  'ppt',  'pptx', 'pptm', 'pps',   'ppsx', 'ppsm', 'sldx', 'sldm', 'odp'],
+ 		text        : ['asc', 'csv',  'tsv',  'txt'],
+ 		archive     : ['bz2', 'cab',  'dmg',  'gz',   'rar',  'sea',   'sit',  'sqx',  'tar',  'tgz',  'zip', '7z'],
+ 		code        : ['css', 'htm',  'html', 'php',  'js']
+ 	};
 
-	var result = 'default';
+ 	var result = 'default';
 
-	for(var type in ext2type)
-	{
-		if(ext2type.hasOwnProperty(type))
-		{
-			if(jQuery.inArray(ext, ext2type[type]) !== -1 )
-			{
-				result = type;
-				break;
-			}
-		}
-	}
-	return result;
-};
+ 	for(var type in ext2type)
+ 	{
+ 		if(ext2type.hasOwnProperty(type))
+ 		{
+ 			if(jQuery.inArray(ext, ext2type[type]) !== -1 )
+ 			{
+ 				result = type;
+ 				break;
+ 			}
+ 		}
+ 	}
+ 	return result;
+ };
 
-vp.get_url_extension = function(url){
-	var regex    = new RegExp(/(.*)[\/\\]([^\/\\]+)\.(\w+)/i);
-	var url_info = regex.exec(url);
-	if(url_info)
-	{
-		if (typeof url_info[3] != 'undefined')
-		{
-			return url_info[3];
-		}
-	}
-	return '';
-};
+ vp.get_url_extension = function(url){
+ 	var regex    = new RegExp(/(.*)[\/\\]([^\/\\]+)\.(\w+)/i);
+ 	var url_info = regex.exec(url);
+ 	if(url_info)
+ 	{
+ 		if (typeof url_info[3] != 'undefined')
+ 		{
+ 			return url_info[3];
+ 		}
+ 	}
+ 	return '';
+ };
 
-vp.jqid = function(id) {
-	return '#' + id.replace(/([:\.\[\]])/g,'\\$1');
-};
+ vp.jqid = function(id) {
+ 	return '#' + id.replace(/([:\.\[\]])/g,'\\$1');
+ };
 
-vp.jqidwild = function(id) {
-	id = id.replace(/([:\.\[\]])/g,'\\$1');
-	id = '[id*=' + id + ']';
-	return id;
-};
+ vp.jqidwild = function(id) {
+ 	id = id.replace(/([:\.\[\]])/g,'\\$1');
+ 	id = '[id*=' + id + ']';
+ 	return id;
+ };
 
-vp.jqname = function(name) {
-	return '[name="' + name + '"]';
-};
+ vp.jqname = function(name) {
+ 	return '[name="' + name + '"]';
+ };
 
-vp.jqnamewild = function(name) {
-	return '[name*="' + name + '"]';
-};
+ vp.jqnamewild = function(name) {
+ 	return '[name*="' + name + '"]';
+ };
 
-vp.thejqid = function(id, thecase) {
-	if(thecase === 'option')
-		return vp.jqid(id);
-	if(thecase === 'metabox')
-		return vp.jqidwild(id);
-	return id;
-};
+ vp.thejqid = function(id, thecase) {
+ 	if(thecase === 'option')
+ 		return vp.jqid(id);
+ 	if(thecase === 'metabox')
+ 		return vp.jqidwild(id);
+ 	return id;
+ };
 
-vp.thejqname = function(name, thecase) {
-	if(thecase === 'option')
-		return vp.jqname(name);
-	if(thecase === 'metabox')
-		return vp.jqnamewild(name);
-	return name;
-};
+ vp.thejqname = function(name, thecase) {
+ 	if(thecase === 'option')
+ 		return vp.jqname(name);
+ 	if(thecase === 'metabox')
+ 		return vp.jqnamewild(name);
+ 	return name;
+ };
 
-vp.validateAlphabet = function(type, val) {
+ vp.validateAlphabet = function(type, val) {
 	// ignore array and empty string, since they should be handled by 'required' rule
 	if (val === '' || jQuery.isArray(val) || jQuery.inArray(type, vp_wp.alphabet_validatable) == -1) { return true; }
 	var regex = new RegExp(/^[A-Z\s]+$/i);
@@ -378,13 +378,13 @@ vp.validateRequired = function(type, val) {
 vp.fields_validation_loop = function(fields){
 
 	var msgHTML = '<li class="validation-msg vp-error"></li>',
-		errors  = 0;
+	errors  = 0;
 
 	for (var i = 0; i < fields.length; i++)
 	{
 		var field   = fields[i],
-		    $tr     = jQuery(vp.jqid(field.name)),
-		    $parent = $tr.parents('.vp-meta-group').exists() ? $tr.parents('.vp-meta-group') : $tr.parents('.vp-section');
+		$tr     = jQuery(vp.jqid(field.name)),
+		$parent = $tr.parents('.vp-meta-group').exists() ? $tr.parents('.vp-meta-group') : $tr.parents('.vp-section');
 
 		// if field is now deleted and not found
 		if($tr.length <= 0)
@@ -395,57 +395,57 @@ vp.fields_validation_loop = function(fields){
 			continue;
 
 		var $msgs  = $tr.children('div.field').children('.validation-msgs').children('ul'),
-		    $input = jQuery('[name="' + field.name + '"]'),
-		    val    = $input.validationVal(),
-		    type   = field.type,
-		    rules  = field.rules.split('|');
+		$input = jQuery('[name="' + field.name + '"]'),
+		val    = $input.validationVal(),
+		type   = field.type,
+		rules  = field.rules.split('|');
 
 		field.nError = 0;
 		for (var j = 0; j < rules.length; j++)
 		{
 			var rule = rules[j],
-			    q1 = rule.indexOf('['),
-			    q2 = rule.indexOf(']'),
-			    def = (q1 >= 0) ? rule.substring(0, q1) : rule,
-			    res = '',
-			    n;
+			q1 = rule.indexOf('['),
+			q2 = rule.indexOf(']'),
+			def = (q1 >= 0) ? rule.substring(0, q1) : rule,
+			res = '',
+			n;
 
 			switch (def)
 			{
 				case 'alphabet':
-					if (!vp.validateAlphabet(type, val)) { res = vp_wp.val_msg.alphabet.format(); }
-					break;
+				if (!vp.validateAlphabet(type, val)) { res = vp_wp.val_msg.alphabet.format(); }
+				break;
 				case 'alphanumeric':
-					if (!vp.validateAlphaNumeric(type, val)) { res = vp_wp.val_msg.alphanumeric.format(); }
-					break;
+				if (!vp.validateAlphaNumeric(type, val)) { res = vp_wp.val_msg.alphanumeric.format(); }
+				break;
 				case 'numeric':
-					if (!vp.validateNumeric(type, val)) { res = vp_wp.val_msg.numeric.format(); }
-					break;
+				if (!vp.validateNumeric(type, val)) { res = vp_wp.val_msg.numeric.format(); }
+				break;
 				case 'email':
-					if (!vp.validateEmail(type, val)) { res = vp_wp.val_msg.email.format(); }
-					break;
+				if (!vp.validateEmail(type, val)) { res = vp_wp.val_msg.email.format(); }
+				break;
 				case 'url':
-					if (!vp.validateURL(type, val)) { res = vp_wp.val_msg.url.format(); }
-					break;
+				if (!vp.validateURL(type, val)) { res = vp_wp.val_msg.url.format(); }
+				break;
 				case 'maxlength':
-					n = rule.substring(q1 + 1, q2);
-					if (!vp.validateMaxLength(type, val, n)) { res = vp_wp.val_msg.maxlength.format(n); }
-					break;
+				n = rule.substring(q1 + 1, q2);
+				if (!vp.validateMaxLength(type, val, n)) { res = vp_wp.val_msg.maxlength.format(n); }
+				break;
 				case 'minlength':
-					n = rule.substring(q1 + 1, q2);
-					if (!vp.validateMinLength(type, val, n)) { res= vp_wp.val_msg.minlength.format(n); }
-					break;
+				n = rule.substring(q1 + 1, q2);
+				if (!vp.validateMinLength(type, val, n)) { res= vp_wp.val_msg.minlength.format(n); }
+				break;
 				case 'maxselected':
-					n = rule.substring(q1 + 1, q2);
-					if (!vp.validateMaxLength(type, val, n)) { res = vp_wp.val_msg.maxselected.format(n); }
-					break;
+				n = rule.substring(q1 + 1, q2);
+				if (!vp.validateMaxLength(type, val, n)) { res = vp_wp.val_msg.maxselected.format(n); }
+				break;
 				case 'minselected':
-					n = rule.substring(q1 + 1, q2);
-					if (!vp.validateMinLength(type, val, n)) { res= vp_wp.val_msg.minselected.format(n); }
-					break;
+				n = rule.substring(q1 + 1, q2);
+				if (!vp.validateMinLength(type, val, n)) { res= vp_wp.val_msg.minselected.format(n); }
+				break;
 				case 'required':
-					if (!vp.validateRequired(type, val)) { res = vp_wp.val_msg.required.format(); }
-					break;
+				if (!vp.validateRequired(type, val)) { res = vp_wp.val_msg.required.format(); }
+				break;
 			}
 
 			if (res !== '')
@@ -455,8 +455,8 @@ vp.fields_validation_loop = function(fields){
 
 				// set message
 				var $msg = jQuery(msgHTML);
-				    $msg.html(res);
-				    $msg.appendTo($msgs);
+				$msg.html(res);
+				$msg.appendTo($msgs);
 			}
 		}
 
@@ -474,7 +474,7 @@ vp.custom_check_radio_event = function(parent, selector){
 	jQuery(parent).delegate(selector, "click", function(e){
 		e.preventDefault();
 		var $control = jQuery(this).find('input'),
-		    type = $control.attr('type');
+		type = $control.attr('type');
 		if(type == 'radio')
 		{
 			jQuery(this).parent().parent().find('input').each(function(i){
@@ -505,8 +505,8 @@ vp.custom_check_radio_event = function(parent, selector){
 // vafpress binding related functions
 vp.binding_action =	function(ids, field, func, thecase) {
 	var $source_tr = jQuery(vp.jqid(field.source)),
-	    $source    = jQuery('[name="' + field.source + '"]'),
-	    values     = [];
+	$source    = jQuery('[name="' + field.source + '"]'),
+	values     = [];
 
 	for (var i = 0; i < ids.length; i++)
 	{
@@ -525,27 +525,45 @@ vp.binding_action =	function(ids, field, func, thecase) {
 
 	// get loader
 	var $loader = $source_tr.find('.vp-js-bind-loader'),
-	    $input  = $source_tr.find('.input');
+	$input  = $source_tr.find('.input');
+
+	// Deferred Object
+	var fadeOutDone = jQuery.Deferred();
+
 
 	if (field.type == 'vp-html') {
-		$loader.vp_fadeIn();
+		var fadeInDone = jQuery.Deferred();
+		$loader.vp_fadeIn(function() {
+			fadeInDone.resolve();
+		});
 	} else {
-		$input.vp_fadeOut(function(){
-			$loader.vp_fadeIn();
-		});
-	}
+			// Fade binded field out
+			$input.vp_fadeOut(function(){
+				fadeOutDone.resolve();
+			});
 
-	jQuery.post(ajaxurl, data, function(response) {
-		$loader.vp_fadeOut(function(){
-			$input.vp_fadeIn();
-		});
-		if (response.status)
-		{
-			var data;
-			switch(field.type)
+			var fadeInDone = jQuery.Deferred();
+			fadeOutDone.done(function(value) {
+				$loader.vp_fadeIn(function() {
+					fadeInDone.resolve();
+				});
+			});
+
+		}
+
+		jQuery.post(ajaxurl, data, function(response) {
+			fadeInDone.done(function(value) {
+				$loader.vp_fadeOut(function(){
+					$input.vp_fadeIn();
+				});
+			});
+			if (response.status)
 			{
-				case 'vp-select':
-				case 'vp-multiselect':
+				var data;
+				switch(field.type)
+				{
+					case 'vp-select':
+					case 'vp-multiselect':
 					$source    = jQuery('[name="' + field.source + '"]');
 					if(response.data !== null)
 					{
@@ -553,7 +571,7 @@ vp.binding_action =	function(ids, field, func, thecase) {
 						$source.val(data).change();
 					}
 					break;
-				case 'vp-checkbox':
+					case 'vp-checkbox':
 					if(response.data !== null)
 					{
 						data = response.data instanceof Array ? response.data : [response.data];
@@ -563,7 +581,7 @@ vp.binding_action =	function(ids, field, func, thecase) {
 						});
 					}
 					break;
-				case 'vp-toggle':
+					case 'vp-toggle':
 					if(response.data !== null)
 					{
 						if(response.data)
@@ -572,7 +590,7 @@ vp.binding_action =	function(ids, field, func, thecase) {
 							$source.prop('checked', false).change();
 					}
 					break;
-				case 'vp-checkimage':
+					case 'vp-checkimage':
 					if(response.data !== null)
 					{
 						data = response.data instanceof Array ? response.data : [response.data];
@@ -583,7 +601,7 @@ vp.binding_action =	function(ids, field, func, thecase) {
 					}
 					vp.init_tipsy();
 					break;
-				case 'vp-radiobutton':
+					case 'vp-radiobutton':
 					if(response.data !== null)
 					{
 						data = response.data instanceof Array ? response.data : [response.data];
@@ -593,7 +611,7 @@ vp.binding_action =	function(ids, field, func, thecase) {
 						});
 					}
 					break;
-				case 'vp-radioimage':
+					case 'vp-radioimage':
 					if(response.data !== null)
 					{
 						data = response.data instanceof Array ? response.data : [response.data];
@@ -604,28 +622,28 @@ vp.binding_action =	function(ids, field, func, thecase) {
 					}
 					vp.init_tipsy();
 					break;
-				case 'vp-html':
+					case 'vp-html':
 					if(response.data !== null)
 					{
 						jQuery(vp.jqid(field.source + '_dom')).html(response.data);
 						jQuery(vp.jqname(field.source)).val(response.data);
 					}
 					break;
-				default:
+					default:
 					$source = jQuery(vp.jqname(field.source));
 					$source.val(response.data);
+				}
+				jQuery('[name="' + field.source + '"]:first').keypress().keyup().change().blur();
 			}
-			jQuery('[name="' + field.source + '"]:first').keypress().keyup().change().blur();
-		}
-	}, 'JSON');
+		}, 'JSON');
 };
 
 vp.binding_event = function(ids, idx, field, func, parent, thecase)
 {
 	var change    = ['vp-select', 'vp-checkbox', 'vp-checkimage', 'vp-radiobutton', 'vp-radioimage', 'vp-multiselect', 'vp-toggle', 'vp-upload'],
-	    typing    = ['vp-textbox', 'vp-slider', 'vp-color', 'vp-date'],
-	    name      = vp.thejqname(ids[idx], thecase),
-	    dest_type = jQuery(vp.thejqid(ids[idx], thecase)).attr('data-vp-type');
+	typing    = ['vp-textbox', 'vp-slider', 'vp-color', 'vp-date'],
+	name      = vp.thejqname(ids[idx], thecase),
+	dest_type = jQuery(vp.thejqid(ids[idx], thecase)).attr('data-vp-type');
 
 	if(jQuery.inArray(dest_type, change) !== -1 )
 	{
@@ -653,8 +671,8 @@ vp.binding_event = function(ids, idx, field, func, parent, thecase)
 // vafpress binding related functions
 vp.items_binding_action =	function(ids, field, func, thecase) {
 	var $source_tr = jQuery(vp.jqid(field.source)),
-	    $source    = jQuery('[name="' + field.source + '"]'),
-	    values     = [];
+	$source    = jQuery('[name="' + field.source + '"]'),
+	values     = [];
 
 	for (var i = 0; i < ids.length; i++)
 	{
@@ -669,7 +687,7 @@ vp.items_binding_action =	function(ids, field, func, thecase) {
 
 	// get loader
 	var $loader = $source_tr.find('.vp-js-bind-loader'),
-	    $input  = $source_tr.find('.input');
+	$input  = $source_tr.find('.input');
 
 	// Deferred Object
 	var deferred = jQuery.Deferred();
@@ -679,8 +697,8 @@ vp.items_binding_action =	function(ids, field, func, thecase) {
 		deferred.resolve();
 	});
 
-	// When field has faded out, 
-	// Fade in loader. 
+	// When field has faded out,
+	// Fade in loader.
 	var deferred2 = jQuery.Deferred();
 	deferred.done(function(value) {
 		$loader.vp_fadeIn(function() {
@@ -708,50 +726,50 @@ vp.items_binding_action =	function(ids, field, func, thecase) {
 			{
 				case 'vp-select':
 				case 'vp-multiselect':
-					$source    = jQuery('[name="' + field.source + '"]');
-					$source.empty();
-					$source.append(jQuery("<option></option>"));
-					response.data !== null && jQuery.each(response.data, function(key, value) {
-						$source
-							.append(jQuery("<option></option>")
-							.attr("value",value.value)
-							.text(value.label));
-					});
-					break;
+				$source    = jQuery('[name="' + field.source + '"]');
+				$source.empty();
+				$source.append(jQuery("<option></option>"));
+				response.data !== null && jQuery.each(response.data, function(key, value) {
+					$source
+					.append(jQuery("<option></option>")
+						.attr("value",value.value)
+						.text(value.label));
+				});
+				break;
 				case 'vp-checkbox':
-					$source = $input;
-					$source.empty();
-					$source = jQuery(vp.jqid(field.source)).find('.input');
-					response.data !== null && jQuery.each(response.data, function(key, value) {
-						$source.append(jQuery('<label><input class="vp-input" type="checkbox" name="' + field.source + '" value="' + value.value + '"><span></span>'+ value.label + '</label>'));
-					});
-					break;
+				$source = $input;
+				$source.empty();
+				$source = jQuery(vp.jqid(field.source)).find('.input');
+				response.data !== null && jQuery.each(response.data, function(key, value) {
+					$source.append(jQuery('<label><input class="vp-input" type="checkbox" name="' + field.source + '" value="' + value.value + '"><span></span>'+ value.label + '</label>'));
+				});
+				break;
 				case 'vp-checkimage':
-					$source = $input;
-					$source.empty();
-					$source = jQuery(vp.jqid(field.source)).find('.input');
-					response.data !== null && jQuery.each(response.data, function(key, value) {
-						$source.append(jQuery('<label><input class="vp-input" type="checkbox" name="' + field.source + '" value="' + value.value + '"><img src="' + value.img + '" alt="' + value.label + '" class="vp-js-tipsy image-item" style="" original-title="' + value.value + '"></label>'));
-					});
-					vp.init_tipsy();
-					break;
+				$source = $input;
+				$source.empty();
+				$source = jQuery(vp.jqid(field.source)).find('.input');
+				response.data !== null && jQuery.each(response.data, function(key, value) {
+					$source.append(jQuery('<label><input class="vp-input" type="checkbox" name="' + field.source + '" value="' + value.value + '"><img src="' + value.img + '" alt="' + value.label + '" class="vp-js-tipsy image-item" style="" original-title="' + value.value + '"></label>'));
+				});
+				vp.init_tipsy();
+				break;
 				case 'vp-radiobutton':
-					$source = $input;
-					$source.empty();
-					$source = jQuery(vp.jqid(field.source)).find('.input');
-					response.data !== null && jQuery.each(response.data, function(key, value) {
-						$source.append(jQuery('<label><input class="vp-input" type="radio" name="' + field.source + '" value="' + value.value + '"><span></span>'+ value.label + '</label>'));
-					});
-					break;
+				$source = $input;
+				$source.empty();
+				$source = jQuery(vp.jqid(field.source)).find('.input');
+				response.data !== null && jQuery.each(response.data, function(key, value) {
+					$source.append(jQuery('<label><input class="vp-input" type="radio" name="' + field.source + '" value="' + value.value + '"><span></span>'+ value.label + '</label>'));
+				});
+				break;
 				case 'vp-radioimage':
-					$source = $input;
-					$source.empty();
-					$source = jQuery(vp.jqid(field.source)).find('.input');
-					response.data !== null && jQuery.each(response.data, function(key, value) {
-						$source.append(jQuery('<label><input class="vp-input" type="radio" name="' + field.source + '" value="' + value.value + '"><img src="' + value.img + '" alt="' + value.label + '" class="vp-js-tipsy image-item" style="" original-title="' + value.value + '"></label>'));
-					});
-					vp.init_tipsy();
-					break;
+				$source = $input;
+				$source.empty();
+				$source = jQuery(vp.jqid(field.source)).find('.input');
+				response.data !== null && jQuery.each(response.data, function(key, value) {
+					$source.append(jQuery('<label><input class="vp-input" type="radio" name="' + field.source + '" value="' + value.value + '"><img src="' + value.img + '" alt="' + value.label + '" class="vp-js-tipsy image-item" style="" original-title="' + value.value + '"></label>'));
+				});
+				vp.init_tipsy();
+				break;
 			}
 			jQuery('[name="' + field.source + '"]:first').change().blur();
 		}
@@ -761,9 +779,9 @@ vp.items_binding_action =	function(ids, field, func, thecase) {
 vp.items_binding_event = function(ids, idx, field, func, parent, thecase)
 {
 	var change    = ['vp-select', 'vp-checkbox', 'vp-checkimage', 'vp-radiobutton', 'vp-radioimage', 'vp-multiselect', 'vp-toggle', 'vp-upload'],
-	    typing    = ['vp-textbox', 'vp-slider', 'vp-color', 'vp-date'],
-	    name      = vp.thejqname(ids[idx], thecase),
-	    dest_type = jQuery(vp.thejqid(ids[idx], thecase)).attr('data-vp-type');
+	typing    = ['vp-textbox', 'vp-slider', 'vp-color', 'vp-date'],
+	name      = vp.thejqname(ids[idx], thecase),
+	dest_type = jQuery(vp.thejqid(ids[idx], thecase)).attr('data-vp-type');
 
 	if(jQuery.inArray(dest_type, change) !== -1 )
 	{
@@ -792,9 +810,9 @@ vp.items_binding_event = function(ids, idx, field, func, parent, thecase)
 vp.dependency_action =	function(ids, field, func) {
 
 	var $source_tr = jQuery(vp.jqid(field.source)),
-	    $source    = jQuery('[name="' + field.source + '"]'),
-	    values     = [],
-	    targets    = [];
+	$source    = jQuery('[name="' + field.source + '"]'),
+	values     = [],
+	targets    = [];
 
 	for (var i = 0; i < ids.length; i++)
 	{
@@ -839,9 +857,9 @@ vp.dependency_action =	function(ids, field, func) {
 vp.dependency_event = function(ids, idx, field, func, parent){
 
 	var change    = ['vp-select', 'vp-checkbox', 'vp-checkimage', 'vp-radiobutton', 'vp-radioimage', 'vp-multiselect', 'vp-toggle', 'vp-upload'],
-	    typing    = ['vp-textbox', 'vp-slider', 'vp-color', 'vp-date'],
-	    name      = vp.thejqname(ids[idx], 'option'),
-	    dest_type = jQuery(vp.thejqid(ids[idx], 'option')).attr('data-vp-type');
+	typing    = ['vp-textbox', 'vp-slider', 'vp-color', 'vp-date'],
+	name      = vp.thejqname(ids[idx], 'option'),
+	dest_type = jQuery(vp.thejqid(ids[idx], 'option')).attr('data-vp-type');
 
 	if(jQuery.inArray(dest_type, change) !== -1 )
 	{
@@ -872,78 +890,78 @@ vp.dependency_event = function(ids, idx, field, func, parent){
  * =============================================================
  */
 
-function theValidate(elem, options, $slider)
-{
-	var $this = jQuery(elem),
-	    val = $this.val();
-	if(val === '')
-		return;
-	if (!vp.validateNumeric('vp-textbox', val))
-	{
-		$this.val(options.min);
-		$slider.slider('value', options.min);
-	}
-	if (val > options.max)
-	{
-		$this.val(options.max);
-		$slider.slider('value', options.max);
-	}
-	else if (val < options.min)
-	{
-		$this.val(options.min);
-		$slider.slider('value', options.min);
-	}
-	else
-	{
-		$slider.slider('value', $this.val());
-	}
-}
+ function theValidate(elem, options, $slider)
+ {
+ 	var $this = jQuery(elem),
+ 	val = $this.val();
+ 	if(val === '')
+ 		return;
+ 	if (!vp.validateNumeric('vp-textbox', val))
+ 	{
+ 		$this.val(options.min);
+ 		$slider.slider('value', options.min);
+ 	}
+ 	if (val > options.max)
+ 	{
+ 		$this.val(options.max);
+ 		$slider.slider('value', options.max);
+ 	}
+ 	else if (val < options.min)
+ 	{
+ 		$this.val(options.min);
+ 		$slider.slider('value', options.min);
+ 	}
+ 	else
+ 	{
+ 		$slider.slider('value', $this.val());
+ 	}
+ }
 
-vp.init_slider = function($elements)
-{
-	if (jQuery.fn.slider)
-	{
-		$elements.each(function(i, el) {
-			var $slider = jQuery(this),
-			    options = jQuery(this).getDatas();
-			options = vp.parseOpt(options.opt);
-			options.range = 'min';
-			options.slide = function(event, ui) {
-				$slider.prev('.slideinput').val(ui.value);
-				$slider.prev('.slideinput').trigger('keypress');
-				$slider.prev('.slideinput').trigger('keyup');
-			};
-			$slider.slider(options);
+ vp.init_slider = function($elements)
+ {
+ 	if (jQuery.fn.slider)
+ 	{
+ 		$elements.each(function(i, el) {
+ 			var $slider = jQuery(this),
+ 			options = jQuery(this).getDatas();
+ 			options = vp.parseOpt(options.opt);
+ 			options.range = 'min';
+ 			options.slide = function(event, ui) {
+ 				$slider.prev('.slideinput').val(ui.value);
+ 				$slider.prev('.slideinput').trigger('keypress');
+ 				$slider.prev('.slideinput').trigger('keyup');
+ 			};
+ 			$slider.slider(options);
 
-			$slider.prev('.slideinput').keypress(function(e) {
-				var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
-				if (e.altKey || e.ctrlKey || e.shiftKey)
-					return true;
-				if (jQuery.inArray(charCode, [45, 46, 8, 0]) != -1 || (charCode >= 48 && charCode <= 57) )
-					return true;
-				return false;
-			})
-			.blur(function(e){
-				theValidate(this, options, $slider);
-				$slider.prev('.slideinput').keypress().keyup();
-			})
-		});
-	}
-};
+ 			$slider.prev('.slideinput').keypress(function(e) {
+ 				var charCode = (typeof e.which == "number") ? e.which : e.keyCode;
+ 				if (e.altKey || e.ctrlKey || e.shiftKey)
+ 					return true;
+ 				if (jQuery.inArray(charCode, [45, 46, 8, 0]) != -1 || (charCode >= 48 && charCode <= 57) )
+ 					return true;
+ 				return false;
+ 			})
+ 			.blur(function(e){
+ 				theValidate(this, options, $slider);
+ 				$slider.prev('.slideinput').keypress().keyup();
+ 			})
+ 		});
+ 	}
+ };
 
 
-vp.upload_callback = function() {};
+ vp.upload_callback = function() {};
 
-if ( vp_wp.use_new_media_upload )
-{
-	var _orig_send_attachment = wp.media.editor.send.attachment,
-	    _orig_send_link       = wp.media.editor.send.link,
-	    _orig_send_to_editor  = window.send_to_editor;
+ if ( vp_wp.use_new_media_upload )
+ {
+ 	var _orig_send_attachment = wp.media.editor.send.attachment,
+ 	_orig_send_link       = wp.media.editor.send.link,
+ 	_orig_send_to_editor  = window.send_to_editor;
 
-	vp.upload_callback = function(e) {
-		var $this    = jQuery(this),
-		    $input   = $this.parent('.buttons').prev('input'),
-		    $preview = $this.parent('.buttons').siblings('.image').find('img');
+ 	vp.upload_callback = function(e) {
+ 		var $this    = jQuery(this),
+ 		$input   = $this.parent('.buttons').prev('input'),
+ 		$preview = $this.parent('.buttons').siblings('.image').find('img');
 
 		// handler for attachment
 		wp.media.editor.send.attachment = function(props, attachment) {
@@ -982,8 +1000,8 @@ else
 
 	vp.upload_callback = function(e) {
 		var _custom_media = true,
-		       $input     = jQuery(this).parent('.buttons').prev('input'),
-		       $preview   = jQuery(this).parent('.buttons').siblings('.image').find('img');
+		$input     = jQuery(this).parent('.buttons').prev('input'),
+		$preview   = jQuery(this).parent('.buttons').siblings('.image').find('img');
 
 		tb_show('Upload Image', 'media-upload.php?&post_id=0&referer=vafpress&TB_iframe=true');
 
@@ -1026,8 +1044,8 @@ function get_url_info(html)
 
 vp.remove_upload_callback = function(e) {
 	var $this    = jQuery(this),
-	    $input   = $this.parent('.buttons').prev('input'),
-	    $preview = $this.parent('.buttons').siblings('.image').find('img');
+	$input   = $this.parent('.buttons').prev('input'),
+	$preview = $this.parent('.buttons').siblings('.image').find('img');
 
 	$input.val('');
 	$preview.attr('src', '');
@@ -1044,7 +1062,7 @@ vp.init_colorpicker = function($elements)
 			return;
 		$elements.each(function() {
 			var $colorpicker  = jQuery(this),
-			    options = jQuery(this).getDatas();
+			options = jQuery(this).getDatas();
 
 			options = vp.parseOpt(options.opt);
 
@@ -1149,7 +1167,7 @@ vp.init_sorter = function($elements)
 
 		$elements.each(function(i, el) {
 			var $el     = jQuery(el),
-			    options = $el.getDatas();
+			options = $el.getDatas();
 			options = vp.parseOpt(options.opt);
 			$el.select2(options).select2Sortable({bindOrder: 'sortableStop'});
 		});
