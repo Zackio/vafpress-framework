@@ -26,7 +26,7 @@ class VP_Option
 	private $_layout;
 
 	private $_options_set = NULL;
-	
+
 	private $_options = NULL;
 
 	private $_hook_suffix;
@@ -47,7 +47,7 @@ class VP_Option
 			'page_title'            => __( 'Vafpress Options', 'vp_textdomain' ),
 			'menu_label'            => __( 'Vafpress Options', 'vp_textdomain' ),
 			'priority'              => 10,
-		), $configs);
+			), $configs);
 
 		// options config filter
 		$configs = apply_filters('vp_option_configuration_array'  , $configs, $configs['option_key']);
@@ -66,7 +66,7 @@ class VP_Option
 
 		// swim in the pool
 		self::$pool[$this->get_option_key()] = &$this;
-		
+
 		// check and set the remaining configs
 		if(isset($menu_page))             $this->set_menu_page($menu_page);
 		if(isset($is_dev_mode))           $this->is_dev_mode($is_dev_mode);
@@ -133,7 +133,7 @@ class VP_Option
 				array($this, 'option_page_display'),
 				$menu_page['icon_url'],
 				$menu_page['position']
-			);
+				);
 		}
 		else
 		{
@@ -144,7 +144,7 @@ class VP_Option
 				$this->get_minimum_role(),
 				$this->get_page_slug(),
 				array($this, 'option_page_display')
-			);
+				);
 		}
 		$this->set_hook_suffix($hook_suffix);
 
@@ -168,7 +168,7 @@ class VP_Option
 	}
 
 	public function enqueue_scripts_and_styles()
-	{	
+	{
 		$opt_loader = VP_WP_Loader::instance();
 		$opt_loader->add_types( $this->get_field_types(), 'option' );
 		$opt_loader->add_main_js( 'vp-option' );
@@ -202,7 +202,7 @@ class VP_Option
 	function ajax_save()
 	{
 		$result = $this->vp_verify_nonce();
-		
+
 		if($result['status'])
 		{
 			$this->init_options_set();
@@ -247,7 +247,7 @@ class VP_Option
 	function ajax_restore()
 	{
 		$result = $this->vp_verify_nonce();
-		
+
 		if( $result['status'] )
 		{
 			$this->init_options_set();
@@ -292,7 +292,7 @@ class VP_Option
 		$old_opt = null;
 
 		$result = $this->vp_verify_nonce();
-		
+
 		if($result['status'])
 		{
 			$this->init_options_set();
@@ -312,7 +312,7 @@ class VP_Option
 				if( is_array($option) )
 				{
 					$set = $this->get_options_set();
-					
+
 					// get old options from set
 					$old_opt = $this->get_options_set()->get_values();
 
@@ -342,7 +342,7 @@ class VP_Option
 		if (ob_get_length()) ob_clean();
 		header('Content-type: application/json');
 		echo json_encode($result);
-		die();
+		// die();
 	}
 
 	function ajax_export_option()
@@ -363,7 +363,7 @@ class VP_Option
 				'status' => true,
 				'message'=> __("Successful", 'vp_textdomain'),
 				'option' => $sr_options,
-			);
+				);
 		}
 
 		// after ajax export action hook
@@ -386,7 +386,7 @@ class VP_Option
 		if($verify)
 		{
 			$result['status']  = true;
-			$result['message'] = __("Successful", 'vp_textdomain');	
+			$result['message'] = __("Successful", 'vp_textdomain');
 		}
 		else
 		{
@@ -444,7 +444,7 @@ class VP_Option
 
 		// setup and process values
 		$set->setup($options);
-		
+
 	}
 
 	public function init_options_set()
@@ -572,7 +572,7 @@ class VP_Option
 	{
 		return $this->_options;
 	}
-	
+
 	/**
 	 * Set _options
 	 *
@@ -593,7 +593,7 @@ class VP_Option
 	{
 		return $this->_options_set;
 	}
-	
+
 	/**
 	 * Set _options_set
 	 *
@@ -614,7 +614,7 @@ class VP_Option
 	{
 		return $this->_menu_page;
 	}
-	
+
 	/**
 	 * Set _menu_page
 	 *
@@ -635,7 +635,7 @@ class VP_Option
 	{
 		return $this->_layout;
 	}
-	
+
 	/**
 	 * Get _layout
 	 *
@@ -656,7 +656,7 @@ class VP_Option
 	{
 		return $this->_page_slug;
 	}
-	
+
 	/**
 	 * Set _page_slug
 	 *
@@ -677,7 +677,7 @@ class VP_Option
 	{
 		return $this->_menu_label;
 	}
-	
+
 	/**
 	 * Set _menu_label
 	 *
@@ -698,7 +698,7 @@ class VP_Option
 	{
 		return $this->_page_title;
 	}
-	
+
 	/**
 	 * Set _page_title
 	 *
@@ -719,7 +719,7 @@ class VP_Option
 	{
 		return $this->_minimum_role;
 	}
-	
+
 	/**
 	 * Set _minimum_role value
 	 *
@@ -740,7 +740,7 @@ class VP_Option
 	{
 		return $this->_option_key;
 	}
-	
+
 	/**
 	 * Set _option_key value
 	 *
